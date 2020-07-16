@@ -50,6 +50,7 @@ chmod 644 /etc/logrotate.conf
 echo 'SUBSYSTEM=="usb", GROUP="usbusers", MODE="0660"
 SUBSYSTEMS=="usb", GROUP="usbusers", MODE="0660"' > /etc/udev/rules.d/99-usb.rules
 
+# Dentro del Servicio Levanto POSBOX en el Puerto 8070 para tenerlo funcionando sobre la misma máquina.
 echo '[Unit]
 Description=Odoo PosBoxLess
 After=network.target
@@ -57,7 +58,7 @@ After=network.target
 Type=simple
 User=pi
 Group=pi
-ExecStart=/home/pi/odoo/odoo-bin --load=web,hw_proxy,hw_posbox_homepage,hw_posbox_upgrade,hw_scale,hw_scanner,hw_escpos
+ExecStart=/home/pi/odoo/odoo-bin --xmlrpc-port=8070 --load=web,hw_proxy,hw_posbox_homepage,hw_posbox_upgrade,hw_scale,hw_scanner,hw_escpos
 KillMode=mixed
 [Install]
 WantedBy=multi-user.target
@@ -66,5 +67,11 @@ WantedBy=multi-user.target
 systemctl enable posboxless.service
 systemctl start posboxless.service
 
+echo -e "
+
+ **** POSBOX FUNCIONA AHORA EN http://localhost:8070 ****
+
+ ********************************************************
+ "
 
 #reboot
